@@ -3,7 +3,7 @@
 <form action="/register" method="post">
     <div class="input-group mb-1">
     <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
-    <input type="text" name="username" class="form-control {{#if errors.username}} is-invalid{{/if}}" placeholder="Name" aria-label="User name" value="{{ user.username }}">
+    <input type="text" name="username" class="form-control {{#if errors.username}} is-invalid{{/if}}" placeholder="Username" aria-label="User name" value="{{ user.username }}">
     {{#if errors.username}}<div class="invalid-feedback">{{ errors.username }}</div>{{/if}}
   </div>
   <div class="input-group mb-1">

@@ -7,22 +7,29 @@ module.exports.register = (req, res, next) => {
   }
 
 module.exports.doRegister = (req,res,next) => {
-    const user = {username, email, password} = req.body
-
-    User.create(user)
-        .then(user => res.redirect('/'))
-        .catch(error => {
-          console.log(error)
-          if (error instanceof mongoose.Error.ValidationError) {
+    User.findOne({ email: req.body.email})
+      .then((user) => {
+        if (user) {
             res.render('auth/register', {
-              errors: error.errors,
-              user: user
+              user: req.body,
+              errors: {
+                email: 'Ups! this email is not valid'
+              }
             })
-          } if (error) {
-
-          } else {
-            next(error)
-          }
-
-        })
+        } else {
+          user = { username, email, password} = req.body;
+          return User.create(user)
+             .then(user => res.redirect('/'))
+        }
+      })
+      .catch(error => {
+        if( error instanceof mongoose.Error.ValidationError) {
+          res.render('auth/register', {
+            user: req.body,
+            errors: errors
+          })
+        } else {
+          next(error)
+        }
+      })
 }
